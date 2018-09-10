@@ -46,11 +46,12 @@
           this.$refs.loginForm.validate(valid => {
             if (valid) {
               this.loading = true;
-              this.$store.dispatch('ExamineeLogin', this.loginForm).then(() => {
+              this.$store.dispatch('loginByExaminee', this.loginForm).then((res) => {
+                console.log(res);
                 this.$Message.success('登录成功');
-
+debugger;
                 this.loading = false;
-                this.$router.push({ path: '/' });
+                // this.$router.push({ path: '/' });
               }).catch(err => {
                 this.$message.error(err);
                 this.loading = false;
