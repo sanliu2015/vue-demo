@@ -101,19 +101,65 @@
           title: '提示',
           content: '<p>确定要交卷吗？</p>',
           onOk: () => {
-            this.$Message.info('Clicked ok');
+            // this.$Message.info('Clicked ok');
+            var vm = this;
+            var totalScore = 0.0;
+            vm.$store.state.examList[this.$route.query.id - 1].forEach(function(item, index){
+              if (Array.isArray(vm.saveAnswer[index]) && Array.isArray(item.answer)) {
+                if (vm.saveAnswer[index].length === item.answer.length
+                  && vm.saveAnswer[index].sort().every(function(v,i) { return v === item.answer[i]})) {  // 全部正确
+                  totalScore += item.score;
+                } else {
+                  let errorFlag = false;
+                  debugger;
+                  for (let i = 0; i < vm.saveAnswer[index].length; i++) {
+                    if (item.answer.indexOf(vm.saveAnswer[index][i]) === -1) {
+                      errorFlag = true;
+                      break;
+                    }
+                  }
+                  if (!errorFlag) {
+                    totalScore += item.score/2;
+                  }
+                }
+              } else {
+                if(item.answer === vm.saveAnswer[index]) {
+                  totalScore += item.score;
+                }
+              }
+            });
+            const scores = [100 ,90, 80, 60, 40, 20],
+              tips = [
+                '哇，为何你这么秀！！',
+                '表现超棒，继续加油！',
+                'good,还有很大空间！',
+                '请您再接再厉！！！',
+                '请继续加油亲！！！',
+                'What are you弄啥嘞！'
+              ];
+            let resultTips = "";
+            if(totalScore <= scores[5]) {
+              resultTips = tips[5];
+            } if(totalScore <= scores[4]) {
+              resultTips = tips[4];
+            } if(totalScore <= scores[3]) {
+              resultTips = tips[3];
+            } if(totalScore <= scores[2]) {
+              resultTips = tips[2];
+            } if(this.getScore <= scores[1]) {
+              resultTips = tips[1];
+            } if(totalScore <= scores[0]) {
+              resultTips = tips[0];
+            }
+            this.EXAM_ID(this.$route.query.id);
+            this.USE_TIME(new Date().getTime() - this.currentTime);
+            clearTimeout(this.timer);
+            this.$router.push({name: 'Result', params: {getScore: totalScore, resultTips: resultTips}});
           },
           onCancel: () => {
-            this.$Message.info('Clicked cancel');
+            // this.$Message.info('Clicked cancel');
           }
         });
-
-
-
-        this.EXAM_ID(this.$route.query.id);
-        this.USE_TIME(new Date().getTime() - this.currentTime);
-        clearTimeout(this.timer);
-        // this.$router.push({name: 'Result'});
       },
       //更改当前题目的答案
       changeCurrentAnswer() {
@@ -226,5 +272,6 @@
   }
   .item-options .ivu-checkbox{
     position: absolute!important;
+    line-height: 1.75;
   }
 </style>

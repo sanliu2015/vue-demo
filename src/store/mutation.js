@@ -16,4 +16,5 @@ export default {
     [EXAM_ID] (state, id) {
         state.examId = id;
     }
+
 }
