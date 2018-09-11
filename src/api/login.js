@@ -1,8 +1,8 @@
-import axios from '@/libs/api.request'
+import axios from 'axios'
 
 export const loginByExaminee = (obj) => {
   return axios.request({
-    url: 'loginByExaminee',
+    url: 'api/loginByExaminee',
     data: obj,
     method: 'post'
   })

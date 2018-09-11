@@ -1,7 +1,8 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import {examTime, examList} from '../data/examData1'
-import {examTime2, examList2} from '../data/examData2'
+// import {examTime, examList} from '../data/examData1'
+// import {examTime2, examList2} from '../data/examData2'
 import mutations from './mutation'
 
 Vue.use(Vuex)

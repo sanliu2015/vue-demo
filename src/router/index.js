@@ -20,7 +20,7 @@ export default new Router({
       component: home
     },
     {
-      path: '/home',
+      path: '/exam/:id',
       component: home
     },
     {

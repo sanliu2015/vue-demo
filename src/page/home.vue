@@ -20,13 +20,15 @@
     </div>
 </template>
 <script>
+    import { loginByExaminee } from "@/api/login";
     export default {
       data () {
         return {
           loginForm: {
             name: '',
             number: '',
-            department: ''
+            department: '',
+            examId: 1
           },
           loginRules: {
             name: [
@@ -41,15 +43,18 @@
           }
         }
       },
+      mounted() {
+        console.log(this.$route.params.id);
+      },
       methods: {
         handleLogin() {
           this.$refs.loginForm.validate(valid => {
             if (valid) {
               this.loading = true;
-              this.$store.dispatch('loginByExaminee', this.loginForm).then((res) => {
+              console.log(this.loginForm);
+              loginByExaminee(this.loginForm).then((res) => {
                 console.log(res);
                 this.$Message.success('登录成功');
-debugger;
                 this.loading = false;
                 // this.$router.push({ path: '/' });
               }).catch(err => {
