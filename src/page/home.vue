@@ -12,7 +12,7 @@
         </FormItem>
       </Form>
       <div class="button-group">
-        <Button type="primary" @click="handleLogin('')">开始考试</Button>
+        <Button type="primary" @click="handleLogin('')">进入考试</Button>
       </div>
         <!--<div class="button-group">
             <span><router-link :to="{name: 'exam1', query: {id: 1}}">考试试题一</router-link></span>
@@ -43,9 +43,9 @@
           }
         }
       },
-      mounted() {
-        console.log(this.$route.params.id);
-      },
+      // mounted() {
+      //   console.log(this.$route.params.id);
+      // },
       methods: {
         handleLogin() {
           this.$refs.loginForm.validate(valid => {
