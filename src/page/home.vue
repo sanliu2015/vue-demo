@@ -20,7 +20,7 @@
     </div>
 </template>
 <script>
-    import { loginByExaminee } from "@/api/login";
+    import { loginByExaminee, getExamInfo} from "@/api/login";
     export default {
       data () {
         return {
@@ -44,19 +44,26 @@
         }
       },
       mounted() {
-        console.log(this.$route.params.id);
+        getExamInfo(this.$route.params.id).then((res) => {
+          this.$store.state.examInfo = res.data.result;
+        }).catch(err => {
+          this.$message.error(err);
+        });
+
       },
       methods: {
         handleLogin() {
           this.$refs.loginForm.validate(valid => {
             if (valid) {
               this.loading = true;
-              console.log(this.loginForm);
               loginByExaminee(this.loginForm).then((res) => {
-                console.log(res);
                 this.$Message.success('登录成功');
                 this.loading = false;
-                // this.$router.push({ path: '/' });
+                debugger;
+                this.$store.state.examinee = res.data.result.examinee;
+                this.$store.state.questions = res.data.result.questions;
+                console.log(this.$store.state.questions );
+                this.$router.push({ path: '/exam/'+ this.$route.params.id + '/test'});
               }).catch(err => {
                 this.$message.error(err);
                 this.loading = false;
