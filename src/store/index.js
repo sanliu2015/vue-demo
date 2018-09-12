@@ -10,15 +10,24 @@ const state = {
     //当前题目索引
     currendIndex: 0,
     //题目列表
-    examList: [examList, examList2],
+    examList: [],
     //保存的答案
     saveAnswer: [],
     //考试时长
-    time: [examTime, examTime2],
+    time: 0,
     //花费的时间
     useTime: '',
     //当前试卷ID
-    examId: 0
+    examId: 0,
+    examInfo: {
+      id : 0,
+      name: '',
+      startTime: '',
+      longMinute: 0
+    },
+    examinee: {},
+    qustions: []
+
 };
 
 

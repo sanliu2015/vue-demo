@@ -2,7 +2,7 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import HelloWorld from '@/components/HelloWorld'
 import home from '@/page/home'
-import exam1 from '@/page/exam1'
+import exam from '@/page/exam'
 import result from '@/page/result'
 
 Vue.use(Router)
@@ -10,24 +10,13 @@ Vue.use(Router)
 export default new Router({
   routes: [
     {
-      path: '/',
-      name: 'Hello',
-      component: HelloWorld,
-      redirect: '/home'
-    },
-    {
-      path: '/home',
-      component: home
-    },
-    {
       path: '/exam/:id',
       component: home
     },
     {
-      path: '/exam1',
-      name: 'exam1',
-      component: exam1,
-      props: (route) => {id: route.query.id}
+      path: '/exam/:id/test',
+      name: 'exam',
+      component: exam
     },
     {
       name: 'Result',

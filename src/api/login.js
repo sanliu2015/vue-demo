@@ -7,3 +7,10 @@ export const loginByExaminee = (obj) => {
     method: 'post'
   })
 }
+
+export const getExamInfo = (examId) => {
+  return axios.request({
+    url: 'api/exam/'+examId,
+    method: 'get'
+  })
+}
