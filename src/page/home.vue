@@ -12,7 +12,7 @@
         </FormItem>
       </Form>
       <div class="button-group">
-        <Button type="primary" @click="handleLogin('')">进入考试</Button>
+        <Button type="primary" @click="handleLogin('')">开始考试</Button>
       </div>
         <!--<div class="button-group">
             <span><router-link :to="{name: 'exam1', query: {id: 1}}">考试试题一</router-link></span>
@@ -20,7 +20,7 @@
     </div>
 </template>
 <script>
-    import { loginByExaminee } from "@/api/login";
+    import { loginByExaminee, getExamInfo, shuffleArr} from "@/api/login";
     export default {
       data () {
         return {
@@ -28,7 +28,7 @@
             name: '',
             number: '',
             department: '',
-            examId: 1
+            examId: 0
           },
           loginRules: {
             name: [
@@ -43,22 +43,45 @@
           }
         }
       },
-      // mounted() {
-      //   console.log(this.$route.params.id);
-      // },
+      mounted() {
+        this.$store.state.currendIndex = 0;
+        this.$store.state.saveAnswer = [];
+        this.$store.state.useTime = '';
+        getExamInfo(this.$route.params.id).then((res) => {
+          if (res.data.code ===0) {
+            this.$store.state.examInfo = res.data.result;
+            this.loginForm.examId = res.data.result.id;
+          } else {
+            this.$Message.error(res.data.msg);
+          }
+        }).catch(err => {
+          this.$Message.error(err);
+        });
+      },
       methods: {
         handleLogin() {
           this.$refs.loginForm.validate(valid => {
             if (valid) {
               this.loading = true;
-              console.log(this.loginForm);
               loginByExaminee(this.loginForm).then((res) => {
-                console.log(res);
-                this.$Message.success('登录成功');
-                this.loading = false;
-                // this.$router.push({ path: '/' });
+                if (res.data.code ===0) {
+                  this.$Message.success('登录成功');
+                  this.loading = false;
+                  this.$store.state.examinee = res.data.result.examinee;
+                  var singleQuestions = [];
+                  var mutilQuestions = [];
+                  var questions = [];
+                  singleQuestions = shuffleArr(res.data.result.singleQuestions);
+                  mutilQuestions = shuffleArr(res.data.result.mutilQuestions);
+                  questions = singleQuestions.concat(mutilQuestions);
+                  this.$store.state.questions = questions;
+                  this.$router.push({ path: '/exam/'+ this.loginForm.examId + '/test'});
+                } else {
+                  this.$Message.error(res.data.msg);
+                  this.loading = false;
+                }
               }).catch(err => {
-                this.$message.error(err);
+                this.$Message.error(err);
                 this.loading = false;
               });
             } else {
