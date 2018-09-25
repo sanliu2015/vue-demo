@@ -4,11 +4,12 @@ import Vue from 'vue'
 import App from './App'
 import router from './router'
 import axios from 'axios'
+import "babel-polyfill"
 // import Mint from 'mint-ui'
 // import 'mint-ui/lib/style.css'
 import iView from 'iview';
-import 'iview/dist/styles/iview.css' 
-import store from './store/' 
+import 'iview/dist/styles/iview.css'
+import store from './store/'
 
 Vue.use(iView);
 
